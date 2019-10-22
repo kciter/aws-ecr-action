@@ -1,0 +1,28 @@
+name: 'AWS ECR Login'
+author: 'Lee Sun-Hyoup <kciter@naver.com>'
+branding:
+  icon: 'log-in'
+  color: 'orange'
+description: 'Logs into ECR and provides Docker credentials'
+inputs:
+  access_key_id:
+    description: The AWS access key id
+    default: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    required: true
+  secret_access_key:
+    description: The AWS secret access key
+    default: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    required: true
+  region:
+    description: The AWS region you would like to login to
+    required: true
+outputs:
+  username:
+    description: 'The username for logging in'
+  password:
+    description: 'The password for logging in'
+  registry:
+    description: 'The registry to log in to'
+runs:
+  using: docker
+  image: Dockerfile

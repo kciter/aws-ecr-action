@@ -1,0 +1,31 @@
+name: AWS ECR
+author: Lee Sun-Hyoup <kciter@naver.com>
+branding:
+  icon: box
+  color: orange
+description: Build docker image
+inputs:
+  account-id:
+    description: AWS Account ID
+    required: true
+  repo:
+    description: Name of your ECR repository
+    required: true
+  region:
+    description: The AWS region
+    required: true
+  dockerfile:
+    description: Name of Dockerfile to use
+    default: Dockerfile
+  extra-build-args:
+    description: Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
+    default: ""
+  path:
+    description: Path to Dockerfile, defaults to the working directory
+    default: .
+  tag:
+    description: Comma-separated string of ECR image tags
+    default: latest
+runs:
+  using: docker
+  image: Dockerfile
