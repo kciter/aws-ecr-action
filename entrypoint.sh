@@ -12,9 +12,9 @@ function main() {
 
   aws_configure
   login
-  docker_build $INPUT_TAG $ACCOUNT_URL
+  docker_build $INPUT_TAGS $ACCOUNT_URL
   create_ecr_repo $INPUT_CREATE_REPO
-  docker_push_to_ecr $INPUT_TAG $ACCOUNT_URL
+  docker_push_to_ecr $INPUT_TAGS $ACCOUNT_URL
 }
 
 function sanitize() {

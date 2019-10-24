@@ -23,7 +23,7 @@ inputs:
   create_repo:
     description: Set this to true to create the repository if it does not already exist
     default: false
-  tag:
+  tags:
     description: Comma-separated string of ECR image tags
     default: latest
   dockerfile:
