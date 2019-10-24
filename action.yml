@@ -3,9 +3,15 @@ author: Lee Sun-Hyoup <kciter@naver.com>
 branding:
   icon: box
   color: orange
-description: Build docker image
+description: Logs into ECR and provides Docker credentials
 inputs:
-  account-id:
+  access_key_id:
+    description: The AWS access key id
+    required: true
+  secret_access_key:
+    description: The AWS secret access key
+    required: true
+  account_id:
     description: AWS Account ID
     required: true
   repo:
@@ -14,18 +20,21 @@ inputs:
   region:
     description: The AWS region
     required: true
+  create_repo:
+    description: Set this to true to create the repository if it does not already exist
+    default: false
+  tag:
+    description: Comma-separated string of ECR image tags
+    default: latest
   dockerfile:
     description: Name of Dockerfile to use
     default: Dockerfile
-  extra-build-args:
+  extra_build_args:
     description: Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
     default: ""
   path:
     description: Path to Dockerfile, defaults to the working directory
     default: .
-  tag:
-    description: Comma-separated string of ECR image tags
-    default: latest
 runs:
   using: docker
   image: Dockerfile

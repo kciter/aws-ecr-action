@@ -1,3 +1,7 @@
 # AWS ECR Action
 
-WIP
+## Parameters
+
+## Usage
+```yaml
+```
