@@ -12,9 +12,9 @@ function main() {
 
   aws_configure
   login
-  dockerize $INPUT_TAG $ACCOUNT_URL
-  create_repo $INPUT_CREATE_REPO
-  push_to_ecr $INPUT_TAG $ACCOUNT_URL
+  docker_build $INPUT_TAG $ACCOUNT_URL
+  create_ecr_repo $INPUT_CREATE_REPO
+  docker_push_to_ecr $INPUT_TAG $ACCOUNT_URL
 }
 
 function sanitize() {
@@ -37,7 +37,7 @@ function login() {
   echo "== FINISHED LOGIN"
 }
 
-function create_repo() {
+function create_ecr_repo() {
   if [ "${1}" = true ]; then
     echo "== START CREATE REPO"
     aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO > /dev/null 2>&1 || \
@@ -46,7 +46,7 @@ function create_repo() {
   fi
 }
 
-function dockerize() {
+function docker_build() {
   echo "== START DOCKERIZE"
   local TAG=$1
   local docker_tag_args=""
@@ -59,7 +59,7 @@ function dockerize() {
   echo "== FINISHED DOCKERIZE"
 }
 
-function push_to_ecr() {
+function docker_push_to_ecr() {
   echo "== START PUSH TO ECR"
   local TAG=$1
   local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
