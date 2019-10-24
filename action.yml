@@ -1,9 +1,9 @@
 name: AWS ECR
 author: Lee Sun-Hyoup <kciter@naver.com>
 branding:
-  icon: box
+  icon: upload-cloud
   color: orange
-description: Logs into ECR and provides Docker credentials
+description: Create Docker images and push into a ECR repository.
 inputs:
   access_key_id:
     description: The AWS access key id
