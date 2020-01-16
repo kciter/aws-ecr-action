@@ -2,7 +2,7 @@ FROM docker:19.03.4
 
 RUN apk update \
   && apk upgrade \
-  && apk add --no-cache --update python py-pip coreutils \
+  && apk add --no-cache --update python py-pip coreutils bash \
   && rm -rf /var/cache/apk/* \
   && pip install awscli \
   && apk --purge -v del py-pip
