@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 function main() {
@@ -7,10 +7,12 @@ function main() {
   sanitize "${INPUT_REGION}" "region"
   sanitize "${INPUT_ACCOUNT_ID}" "account_id"
   sanitize "${INPUT_REPO}" "repo"
+  sanitize "${INPUT_ASSUME_ROLE}" "assume_role"
 
   ACCOUNT_URL="$INPUT_ACCOUNT_ID.dkr.ecr.$INPUT_REGION.amazonaws.com"
 
   aws_configure
+  assume_role
   login
   docker_build $INPUT_TAGS $ACCOUNT_URL
   create_ecr_repo $INPUT_CREATE_REPO
@@ -35,6 +37,19 @@ function login() {
   LOGIN_COMMAND=$(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
   $LOGIN_COMMAND
   echo "== FINISHED LOGIN"
+}
+
+function assume_role() {
+  if [ "${INPUT_ASSUME_ROLE}" != "" ]; then
+    echo "== START ASSUME ROLE"
+    ROLE="arn:aws:iam::${INPUT_ACCOUNT_ID}:role/${INPUT_ASSUME_ROLE}"
+    CREDENTIALS=$(aws sts assume-role --role-arn ${ROLE} --role-session-name ecrpush --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --output text)
+    read id key token <<< ${CREDENTIALS}
+    export AWS_ACCESS_KEY_ID="${id}"
+    export AWS_SECRET_ACCESS_KEY="${key}"
+    export AWS_SESSION_TOKEN="${token}"
+    echo "== FINISHED ASSUME ROLE"
+  fi
 }
 
 function create_ecr_repo() {
@@ -65,6 +80,7 @@ function docker_push_to_ecr() {
   local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
   for tag in $DOCKER_TAGS; do
     docker push $2/$INPUT_REPO:$tag
+    echo ::set-output name=image::$2/$INPUT_REPO:$tag
   done
   echo "== FINISHED PUSH TO ECR"
 }

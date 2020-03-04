@@ -14,6 +14,10 @@ inputs:
   account_id:
     description: AWS Account ID
     required: true
+  assume_role:
+    description: A role to assume under the account_id account.
+    required: false
+    default: ''
   repo:
     description: Name of your ECR repository
     required: true
@@ -31,10 +35,13 @@ inputs:
     default: Dockerfile
   extra_build_args:
     description: Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
-    default: ""
+    default: ''
   path:
     description: Path to Dockerfile, defaults to the working directory
     default: .
+outputs:
+  image:
+    description: 'The created image name'
 runs:
   using: docker
   image: Dockerfile
