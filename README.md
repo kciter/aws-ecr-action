@@ -22,6 +22,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v1
     - uses: kciter/aws-ecr-action@v1
       with:
         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
