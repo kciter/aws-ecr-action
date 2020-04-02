@@ -1,4 +1,4 @@
-name: AWS ECR
+name: AWS: Deploy to ECR
 author: Lee Sun-Hyoup <kciter@naver.com>
 branding:
   icon: upload-cloud
