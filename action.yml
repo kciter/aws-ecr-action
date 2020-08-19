@@ -39,6 +39,9 @@ inputs:
   path:
     description: Path to Dockerfile, defaults to the working directory
     default: .
+  prebuild_script:
+    description: Relative path from top-level to script to run before Docker build
+    required: false
 outputs:
   image:
     description: 'The created image name'

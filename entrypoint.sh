@@ -13,6 +13,7 @@ function main() {
   aws_configure
   assume_role
   login
+  run_pre_build_script $INPUT_PREBUILD_SCRIPT
   docker_build $INPUT_TAGS $ACCOUNT_URL
   create_ecr_repo $INPUT_CREATE_REPO
   docker_push_to_ecr $INPUT_TAGS $ACCOUNT_URL
@@ -58,6 +59,15 @@ function create_ecr_repo() {
     aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO > /dev/null 2>&1 || \
       aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
     echo "== FINISHED CREATE REPO"
+  fi
+}
+
+function run_pre_build_script() {
+  if [ ! -z "${1}" ]; then
+    echo "== START PREBUILD SCRIPT"
+    chmod a+x $1
+    $1
+    echo "== FINISHED PREBUILD SCRIPT"
   fi
 }
 
