@@ -16,6 +16,7 @@ function main() {
   run_pre_build_script $INPUT_PREBUILD_SCRIPT
   docker_build $INPUT_TAGS $ACCOUNT_URL
   create_ecr_repo $INPUT_CREATE_REPO
+  set_ecr_repo_policy $INPUT_SET_REPO_POLICY
   docker_push_to_ecr $INPUT_TAGS $ACCOUNT_URL
 }
 
@@ -59,6 +60,14 @@ function create_ecr_repo() {
     aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO > /dev/null 2>&1 || \
       aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
     echo "== FINISHED CREATE REPO"
+  fi
+}
+
+function set_ecr_repo_policy() {
+  if [ "${1}" = true ]; then
+    echo "== START SET REPO POLICY"
+    aws ecr set-repository-policy --repository-name $INPUT_REPO --policy-text file://"${INPUT_REPO_POLICY_FILE}"
+    echo "== FINISHED SET REPO POLICY"
   fi
 }
 
