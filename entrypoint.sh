@@ -58,7 +58,9 @@ function create_ecr_repo() {
   if [ "${1}" = true ]; then
     echo "== START CREATE REPO"
     aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO > /dev/null 2>&1
-      [ $? -ne 0 ] && aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
+      if [ $? -ne 0 ]; then
+        aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
+      fi
     echo "== FINISHED CREATE REPO"
   fi
 }
