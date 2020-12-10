@@ -57,8 +57,14 @@ function assume_role() {
 function create_ecr_repo() {
   if [ "${1}" = true ]; then
     echo "== START CREATE REPO"
-    aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO > /dev/null 2>&1 || aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
+    echo "REGION: ${AWS_DEFAULT_REGION}"
+    echo "REPO: ${INPUT_REPO}"
+    set +e
+    aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO
+    aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO > /dev/null 2>&1 || \
+      aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
     echo "== FINISHED CREATE REPO"
+    set -e
   fi
 }
 
