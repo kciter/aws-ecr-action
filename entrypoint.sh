@@ -77,8 +77,12 @@ function create_ecr_repo() {
 function set_ecr_repo_policy() {
   if [ "${1}" = true ]; then
     echo "== START SET REPO POLICY"
-    aws ecr set-repository-policy --repository-name $INPUT_REPO --policy-text file://"${INPUT_REPO_POLICY_FILE}"
-    echo "== FINISHED SET REPO POLICY"
+    if [ -f "${INPUT_REPO_POLICY_FILE}" ]; then
+      aws ecr set-repository-policy --repository-name $INPUT_REPO --policy-text file://"${INPUT_REPO_POLICY_FILE}"
+      echo "== FINISHED SET REPO POLICY"
+    else
+      echo "== REPO POLICY FILE (${INPUT_REPO_POLICY_FILE}) DOESN'T EXIST. SKIPPING.."
+    fi
   fi
 }
 
