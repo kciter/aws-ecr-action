@@ -57,9 +57,20 @@ function assume_role() {
 function create_ecr_repo() {
   if [ "${1}" = true ]; then
     echo "== START CREATE REPO"
-    aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO > /dev/null || \
-      aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
-    echo "== FINISHED CREATE REPO"
+    echo "== CHECK REPO EXISTS"
+    output=$(aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO 2>&1)
+    if [ $? -ne 0 ]; then
+      if echo ${output} | grep -q RepositoryNotFoundException; then
+        echo "== REPO DOESN'T EXIST, CREATING.."
+        aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
+        echo "== FINISHED CREATE REPO"
+      else
+        >&2 echo ${output}
+        exit
+      fi
+    else
+      echo "== REPO EXISTS, SKIPPING CREATION.."
+    fi
   fi
 }
 
