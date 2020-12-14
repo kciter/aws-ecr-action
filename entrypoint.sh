@@ -60,7 +60,7 @@ function create_ecr_repo() {
     echo "== CHECK REPO EXISTS"
     set +e
     output=$(aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO 2>&1)
-    exit_code = $?
+    exit_code=$?
     if [ $exit_code -ne 0 ]; then
       if echo ${output} | grep -q RepositoryNotFoundException; then
         echo "== REPO DOESN'T EXIST, CREATING.."
