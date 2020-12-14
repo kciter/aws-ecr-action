@@ -58,19 +58,22 @@ function create_ecr_repo() {
   if [ "${1}" = true ]; then
     echo "== START CREATE REPO"
     echo "== CHECK REPO EXISTS"
+    set +e
     output=$(aws ecr describe-repositories --region $AWS_DEFAULT_REGION --repository-names $INPUT_REPO 2>&1)
-    if [ $? -ne 0 ]; then
+    exit_code = $?
+    if [ exit_code -ne 0 ]; then
       if echo ${output} | grep -q RepositoryNotFoundException; then
         echo "== REPO DOESN'T EXIST, CREATING.."
         aws ecr create-repository --region $AWS_DEFAULT_REGION --repository-name $INPUT_REPO
         echo "== FINISHED CREATE REPO"
       else
         >&2 echo ${output}
-        exit
+        exit exit_code
       fi
     else
       echo "== REPO EXISTS, SKIPPING CREATION.."
     fi
+    set -e
   fi
 }
 
