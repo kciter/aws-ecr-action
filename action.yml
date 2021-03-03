@@ -27,6 +27,12 @@ inputs:
   create_repo:
     description: Set this to true to create the repository if it does not already exist
     default: false
+  set_repo_policy:
+    description: Set this to true to set a policy on the repository
+    default: false
+  repo_policy_file:
+    description: Set this to repository policy statement json file. only used if the set_repo_policy is set to true
+    default: repo-policy.json
   tags:
     description: Comma-separated string of ECR image tags
     default: latest
