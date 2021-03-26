@@ -1,0 +1,24 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: docker login
+        run: |
+          echo "$GCR_TOKEN" | docker login ghcr.io -u kciter --password-stdin
+        env:
+          GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
+
+      - name: build and push latest docker image to GCR
+        run: |
+          docker build -t ghcr.io/kciter/aws-ecr-action:latest .
+          docker push ghcr.io/kciter/aws-ecr-action:latest
