@@ -14,9 +14,7 @@ jobs:
 
       - name: docker login
         run: |
-          echo "$GCR_TOKEN" | docker login ghcr.io -u kciter --password-stdin
-        env:
-          GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
+          echo ${{ secrets.GCR_TOKEN }} | docker login ghcr.io -u kciter --password-stdin
 
       - name: build and push latest docker image to GCR
         run: |
