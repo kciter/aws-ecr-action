@@ -12,12 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: docker login
-        run: |
-          echo ${{ secrets.GCR_TOKEN }} | docker login ghcr.io -u kciter --password-stdin
-
       - name: build and push latest docker image to GCR
         run: |
+          echo ${{ secrets.GCR_TOKEN }} | docker login ghcr.io -u kciter --password-stdin
           docker pull ghcr.io/kciter/aws-ecr-action:latest
           docker build . -t ghcr.io/kciter/aws-ecr-action:$GITHUB_SHA --cache-from ghcr.io/kciter/aws-ecr-action:latest
           docker push ghcr.io/kciter/aws-ecr-action:$GITHUB_SHA
