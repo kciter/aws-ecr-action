@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+INPUT_PATH="${INPUT_PATH:-.}"
+INPUT_DOCKERFILE="${INPUT_DOCKERFILE:-Dockerfile}"
+INPUT_TAGS="${INPUT_TAGS:-latest}"
+INPUT_CREATE_REPO="${INPUT_CREATE_REPO:-false}"
+INPUT_SET_REPO_POLICY="${INPUT_PATH:-false}"
+INPUT_REPO_POLICY_FILE="${INPUT_PATH:-repo-policy.json}"
+
 function main() {
   sanitize "${INPUT_ACCESS_KEY_ID}" "access_key_id"
   sanitize "${INPUT_SECRET_ACCESS_KEY}" "secret_access_key"
