@@ -45,14 +45,10 @@ If you don't want to use the latest docker image, you can point to any reference
 ```yaml
   - uses: kciter/aws-ecr-action@master
   # or
-  - uses: kciter/aws-ecr-action@v2
+  - uses: kciter/aws-ecr-action@v3
   # or
   - uses: kciter/aws-ecr-action@0589ad88c51a1b08fd910361ca847ee2cb708a30
 ```
-
-## Reference
-* https://github.com/CircleCI-Public/aws-ecr-orb
-* https://github.com/elgohr/Publish-Docker-Github-Action
 
 ## License
 The MIT License (MIT)
