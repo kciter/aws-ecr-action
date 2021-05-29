@@ -114,6 +114,14 @@ function docker_build() {
     docker_tag_args="$docker_tag_args -t $2/$INPUT_REPO:$tag"
   done
 
+  if [ -n "${INPUT_CACHE_FROM}" ]; then
+    for i in ${INPUT_CACHE_FROM//,/ }; do
+      docker pull $i
+    done
+
+    INPUT_EXTRA_BUILD_ARGS="$INPUT_EXTRA_BUILD_ARGS --cache-from=$INPUT_CACHE_FROM"
+  fi
+
   docker build $INPUT_EXTRA_BUILD_ARGS -f $INPUT_DOCKERFILE $docker_tag_args $INPUT_PATH
   echo "== FINISHED DOCKERIZE"
 }
