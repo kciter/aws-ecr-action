@@ -16,6 +16,7 @@ This Action allows you to create Docker images and push into a ECR repository.
 | `tags` | `string` | `latest` | Comma-separated string of ECR image tags (ex latest,1.0.0,) |
 | `dockerfile` | `string` | `Dockerfile` | Name of Dockerfile to use |
 | `extra_build_args` | `string` | `""` | Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build) |
+| `cache_from` | `string` | `""` | Images to use as cache for the docker build (see `--cache-from` argument docs.docker.com/engine/reference/commandline/build) |
 | `path` | `string` | `.` | Path to Dockerfile, defaults to the working directory |
 | `prebuild_script` | `string` | | Relative path from top-level to script to run before Docker build |
 
