@@ -42,6 +42,9 @@ inputs:
   extra_build_args:
     description: Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
     default: ''
+  cache_from:
+    description: Images to use as cache for the docker build (see `--cache-from` argument docs.docker.com/engine/reference/commandline/build)
+    default: ''
   path:
     description: Path to Dockerfile, defaults to the working directory
     default: .
