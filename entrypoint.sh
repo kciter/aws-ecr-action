@@ -7,6 +7,7 @@ INPUT_TAGS="${INPUT_TAGS:-latest}"
 INPUT_CREATE_REPO="${INPUT_CREATE_REPO:-false}"
 INPUT_SET_REPO_POLICY="${INPUT_SET_REPO_POLICY:-false}"
 INPUT_REPO_POLICY_FILE="${INPUT_REPO_POLICY_FILE:-repo-policy.json}"
+INPUT_IMAGE_SCANNING_CONFIGURATION="${INPUT_IMAGE_SCANNING_CONFIGURATION:-false}"
 
 function main() {
   sanitize "${INPUT_ACCESS_KEY_ID}" "access_key_id"
@@ -14,6 +15,7 @@ function main() {
   sanitize "${INPUT_REGION}" "region"
   sanitize "${INPUT_ACCOUNT_ID}" "account_id"
   sanitize "${INPUT_REPO}" "repo"
+  sanitize "${INPUT_IMAGE_SCANNING_CONFIGURATION}" "image_scanning_configuration"
 
   ACCOUNT_URL="$INPUT_ACCOUNT_ID.dkr.ecr.$INPUT_REGION.amazonaws.com"
 
@@ -25,6 +27,7 @@ function main() {
   create_ecr_repo $INPUT_CREATE_REPO
   set_ecr_repo_policy $INPUT_SET_REPO_POLICY
   docker_push_to_ecr $INPUT_TAGS $ACCOUNT_URL
+  image_scanning_configuration $INPUT_IMAGE_SCANNING_CONFIGURATION
 }
 
 function sanitize() {
@@ -92,6 +95,16 @@ function set_ecr_repo_policy() {
       echo "== FINISHED SET REPO POLICY"
     else
       echo "== REPO POLICY FILE (${INPUT_REPO_POLICY_FILE}) DOESN'T EXIST. SKIPPING.."
+    fi
+  fi
+}
+
+function put_image_scanning_configuration() {
+  if [ "${1}" = true ]; then
+      echo "== START SET IMAGE SCANNING CONFIGURATION"
+    if [ -f "${INPUT_IMAGE_SCANNING_CONFIGURATION}" ]; then
+      aws ecr put-image-scanning-configuration --repository-name $INPUT_REPO --image-scanning-configuration scanOnPush=${INPUT_IMAGE_SCANNING_CONFIGURATION}
+      echo "== FINISHED SET IMAGE SCANNING CONFIGURATION"
     fi
   fi
 }
