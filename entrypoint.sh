@@ -27,7 +27,7 @@ function main() {
   create_ecr_repo $INPUT_CREATE_REPO
   set_ecr_repo_policy $INPUT_SET_REPO_POLICY
   docker_push_to_ecr $INPUT_TAGS $ACCOUNT_URL
-  image_scanning_configuration $INPUT_IMAGE_SCANNING_CONFIGURATION
+  put_image_scanning_configuration $INPUT_IMAGE_SCANNING_CONFIGURATION
 }
 
 function sanitize() {
