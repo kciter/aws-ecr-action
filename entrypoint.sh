@@ -102,7 +102,7 @@ function set_ecr_repo_policy() {
 function put_image_scanning_configuration() {
   if [ "${1}" = true ]; then
       echo "== START SET IMAGE SCANNING CONFIGURATION"
-    if [ -f "${INPUT_IMAGE_SCANNING_CONFIGURATION}" ]; then
+    if [ "${INPUT_IMAGE_SCANNING_CONFIGURATION}" = true ]; then
       aws ecr put-image-scanning-configuration --repository-name $INPUT_REPO --image-scanning-configuration scanOnPush=${INPUT_IMAGE_SCANNING_CONFIGURATION}
       echo "== FINISHED SET IMAGE SCANNING CONFIGURATION"
     fi
