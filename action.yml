@@ -1,5 +1,5 @@
 name: AWS ECR
-author: Lee Sun-Hyoup <kciter@naver.com>
+author: Lee Sun-Hyoup <kciter@naver.com>, Pablo Castillo <pablo@castillo.is>
 branding:
   icon: upload-cloud
   color: orange
@@ -36,6 +36,9 @@ inputs:
   tags:
     description: Comma-separated string of ECR image tags
     default: latest
+  image_scanning_configuration:
+    description: Set this to True if you want AWS to scan your images for vulnerabilities
+    default: false
   dockerfile:
     description: Name of Dockerfile to use
     default: Dockerfile
