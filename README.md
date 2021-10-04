@@ -20,6 +20,7 @@ This Action allows you to create Docker images and push into a ECR repository.
 | `cache_from` | `string` | `""` | Images to use as cache for the docker build (see `--cache-from` argument docs.docker.com/engine/reference/commandline/build) |
 | `path` | `string` | `.` | Path to Dockerfile, defaults to the working directory |
 | `prebuild_script` | `string` | | Relative path from top-level to script to run before Docker build |
+| `registry_ids` | `string` | | : A comma-delimited list of AWS account IDs that are associated with the ECR registries. If you do not specify a registry, the default ECR registry is assumed |
 
 ## Usage
 
