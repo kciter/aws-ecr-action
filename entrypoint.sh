@@ -44,8 +44,15 @@ function aws_configure() {
 
 function login() {
   echo "== START LOGIN"
-  LOGIN_COMMAND=$(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-  $LOGIN_COMMAND
+  if [ "${INPUT_REGISTRY_IDS}" == "" ]; then
+    INPUT_REGISTRY_IDS=$INPUT_ACCOUNT_ID
+  fi
+  
+  for i in ${INPUT_REGISTRY_IDS//,/ }
+  do
+    aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $i.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  done
+  
   echo "== FINISHED LOGIN"
 }
 
