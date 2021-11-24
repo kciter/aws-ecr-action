@@ -10,7 +10,7 @@ RUN apk update \
 
 ADD entrypoint.sh /entrypoint.sh
 
-COPY $INPUT_DOCKER_IMAGE_PATH $INPUT_DOCKER_IMAGE_PATH
+COPY /tmp /tmp
 
 RUN ["chmod", "+x", "/entrypoint.sh"]
 
