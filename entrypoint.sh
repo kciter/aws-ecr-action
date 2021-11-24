@@ -25,7 +25,7 @@ function main() {
   if [ "$INPUT_DOCKER_IMAGE_PATH" == "" ]; then
     run_pre_build_script $INPUT_PREBUILD_SCRIPT
     docker_build $INPUT_TAGS $ACCOUNT_URL
-  else if [ "$INPUT_DOCKER_IMAGE_PATH" != "" ]; then
+  elif [ "$INPUT_DOCKER_IMAGE_PATH" != "" ]; then
     docker_push_image $INPUT_TAGS $ACCOUNT_URL $INPUT_DOCKER_IMAGE_PATH
   fi
 
