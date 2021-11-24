@@ -3,7 +3,6 @@ set -e
 
 INPUT_PATH="${INPUT_PATH:-.}"
 INPUT_DOCKERFILE="${INPUT_DOCKERFILE:-Dockerfile}"
-INPUT_DOCKER_IMAGE_PATH="${INPUT_DOCKER_IMAGE_PATH:-''}"
 INPUT_TAGS="${INPUT_TAGS:-latest}"
 INPUT_CREATE_REPO="${INPUT_CREATE_REPO:-false}"
 INPUT_SET_REPO_POLICY="${INPUT_SET_REPO_POLICY:-false}"
@@ -26,6 +25,7 @@ function main() {
     run_pre_build_script $INPUT_PREBUILD_SCRIPT
     docker_build $INPUT_TAGS $ACCOUNT_URL
   elif [ "$INPUT_DOCKER_IMAGE_PATH" != "" ]; then
+    echo "image path $INPUT_DOCKER_IMAGE_PATH"
     docker_load_from_tar $INPUT_TAGS $ACCOUNT_URL $INPUT_DOCKER_IMAGE_PATH
   fi
 
