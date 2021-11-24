@@ -153,6 +153,7 @@ function docker_build() {
 
 function docker_load_from_tar() {
   echo "== START DOCKER LOAD FROM TAR"
+  ls -R
   local TAG=$1
   local docker_tag_args=""
   local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
