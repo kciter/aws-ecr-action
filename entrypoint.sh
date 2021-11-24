@@ -176,5 +176,4 @@ function docker_push_to_ecr() {
   echo "== FINISHED PUSH TO ECR"
 }
 
-# main
-docker_load_from_tar()
+main
