@@ -26,7 +26,7 @@ function main() {
     run_pre_build_script $INPUT_PREBUILD_SCRIPT
     docker_build $INPUT_TAGS $ACCOUNT_URL
   else if [ "$INPUT_DOCKER_IMAGE_PATH" != "" ]; then
-    docker_push_image $INPUT_DOCKER_IMAGE_PATH
+    docker_push_image $INPUT_TAGS $ACCOUNT_URL $INPUT_DOCKER_IMAGE_PATH
   fi
 
   create_ecr_repo $INPUT_CREATE_REPO
@@ -153,7 +153,15 @@ function docker_build() {
 
 function docker_load_from_tar() {
   echo "== START DOCKER LOAD FROM TAR"
-  docker load $1
+  local TAG=$1
+  local docker_tag_args=""
+  local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
+  for tag in $DOCKER_TAGS; do
+    docker_tag_args="$docker_tag_args -t $2/$INPUT_REPO:$tag"
+  done
+  docker load $3
+  local last_image_id=$(docker images | awk '{print $1}' | awk 'NR==2')
+  docker tag $last_image_id $docker_tag_args
   echo "== FINISHED DOCKER LOAD FROM TAR"
 }
 
@@ -168,4 +176,5 @@ function docker_push_to_ecr() {
   echo "== FINISHED PUSH TO ECR"
 }
 
-main
+# main
+docker_load_from_tar()
