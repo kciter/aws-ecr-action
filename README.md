@@ -26,6 +26,8 @@ This Action allows you to create Docker images and push into a ECR repository.
 
 ## Usage
 
+### Build the docker image
+
 ```yaml
 jobs:
   build-and-push:
@@ -44,6 +46,52 @@ jobs:
           image_scanning_configuration: true
           set_repo_policy: true
           repo_policy_file: repo-policy.json
+```
+
+### Pass the specified docker image
+
+```yaml
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Short SHA
+        id: get_sha
+        run: echo ::set-output name=SHA_SHORT::$(git rev-parse --short HEAD)
+      - name: Build Image
+        uses: docker/build-push-action@v2
+        id: build
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: ${{ secrets. AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/docker/repo:${{ steps.get_sha.outputs.SHA_SHORT }}
+          outputs: type=docker,dest=/tmp/image.tar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: image
+          path: /tmp/image.tar
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: image
+          path: ./tmp
+
+      - name: Push to ecr
+        uses: argonautdev/aws-ecr-action@pr-tar-image-support
+        id: push_to_ecr
+        with:
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          repo: docker/repo
+          region: us-east-2
+          tags: ${{ steps.get_sha.outputs.SHA_SHORT }}
+          create_repo: true
+          image_scanning_configuration: true
+          docker_image_path: ./tmp/image.tar
 ```
 
 If you don't want to use the latest docker image, you can point to any reference in the repo directly.
