@@ -153,7 +153,6 @@ function docker_build() {
 
 function docker_load_from_tar() {
   echo "== START DOCKER LOAD FROM TAR"
-  ls -R
   local TAG=$1
   local docker_tag_args=""
   local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
@@ -162,6 +161,8 @@ function docker_load_from_tar() {
   done
   docker load --input $3
   local last_image_id=$(docker images | awk '{print $1}' | awk 'NR==2')
+  echo "docker tags $docker_tag_args"
+  echo "last image id $last_image_id"
   docker tag $last_image_id $docker_tag_args
   echo "== FINISHED DOCKER LOAD FROM TAR"
 }
