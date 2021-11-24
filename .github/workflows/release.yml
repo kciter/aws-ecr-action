@@ -19,7 +19,9 @@ jobs:
           GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
 
       - name: build and push latest docker image to GCR
+        env:
+          USER: "argonautdev"
         run: |
           docker pull ghcr.io/kciter/aws-ecr-action:latest
-          docker build . --tag ghcr.io/kciter/aws-ecr-action:$GITHUB_SHA --cache-from ghcr.io/kciter/aws-ecr-action:latest
-          docker push ghcr.io/kciter/aws-ecr-action:$GITHUB_SHA
+          docker build . --tag ghcr.io/$USER/aws-ecr-action:$GITHUB_SHA --cache-from ghcr.io/$USER/aws-ecr-action:latest
+          docker push ghcr.io/$USER/aws-ecr-action:$GITHUB_SHA
