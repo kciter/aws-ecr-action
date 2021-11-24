@@ -49,7 +49,7 @@ inputs:
   docker_image_path:
     description: Path to the docker image if build at as a seperate step. If this path is provided docker build is skipped and passed image is uploaded.
     required: false
-    default: ""
+    default: "/tmp"
   extra_build_args:
     description: Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
     default: ""

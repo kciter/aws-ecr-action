@@ -21,10 +21,10 @@ function main() {
   aws_configure
   assume_role
   login
-  if [ "$INPUT_DOCKER_IMAGE_PATH" == "" ]; then
+  if [ "$INPUT_DOCKER_IMAGE_PATH" == "/tmp" ]; then
     run_pre_build_script $INPUT_PREBUILD_SCRIPT
     docker_build $INPUT_TAGS $ACCOUNT_URL
-  elif [ "$INPUT_DOCKER_IMAGE_PATH" != "" ]; then
+  elif [ "$INPUT_DOCKER_IMAGE_PATH" != "/tmp" ]; then
     echo "image path $INPUT_DOCKER_IMAGE_PATH"
     docker_load_from_tar $INPUT_TAGS $ACCOUNT_URL $INPUT_DOCKER_IMAGE_PATH
   fi
