@@ -26,7 +26,7 @@ function main() {
     run_pre_build_script $INPUT_PREBUILD_SCRIPT
     docker_build $INPUT_TAGS $ACCOUNT_URL
   elif [ "$INPUT_DOCKER_IMAGE_PATH" != "" ]; then
-    docker_push_image $INPUT_TAGS $ACCOUNT_URL $INPUT_DOCKER_IMAGE_PATH
+    docker_load_from_tar $INPUT_TAGS $ACCOUNT_URL $INPUT_DOCKER_IMAGE_PATH
   fi
 
   create_ecr_repo $INPUT_CREATE_REPO
