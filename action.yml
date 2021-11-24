@@ -17,11 +17,11 @@ inputs:
   registry_ids:
     description: A comma-delimited list of AWS account IDs that are associated with the ECR registries. If you do not specify a registry, the default ECR registry is assumed
     required: false
-    default: ''
+    default: ""
   assume_role:
     description: A role to assume under the account_id account.
     required: false
-    default: ''
+    default: ""
   repo:
     description: Name of your ECR repository
     required: true
@@ -46,12 +46,16 @@ inputs:
   dockerfile:
     description: Name of Dockerfile to use
     default: Dockerfile
+  docker_image_path:
+    description: Path to the docker image if build at as a seperate step. If this path is provided docker build is skipped and passed image is uploaded.
+    required: false
+    default: ""
   extra_build_args:
     description: Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
-    default: ''
+    default: ""
   cache_from:
     description: Images to use as cache for the docker build (see `--cache-from` argument docs.docker.com/engine/reference/commandline/build)
-    default: ''
+    default: ""
   path:
     description: Path to Dockerfile, defaults to the working directory
     default: .
@@ -60,7 +64,7 @@ inputs:
     required: false
 outputs:
   image:
-    description: 'The created image name'
+    description: "The created image name"
 runs:
   using: docker
   image: Dockerfile
