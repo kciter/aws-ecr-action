@@ -48,6 +48,10 @@ inputs:
   prebuild_script:
     description: Relative path from top-level to script to run before Docker build
     required: false
+  use_buildkit:
+    description: Use BuildKit to build Docker images. 1 for true, 0 for false.
+    required: false
+    default: 0
 outputs:
   image:
     description: 'The created image name'
