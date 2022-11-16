@@ -47,12 +47,12 @@ function login() {
   if [ "${INPUT_REGISTRY_IDS}" == "" ]; then
     INPUT_REGISTRY_IDS=$INPUT_ACCOUNT_ID
   fi
-  
+
   for i in ${INPUT_REGISTRY_IDS//,/ }
   do
     aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $i.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   done
-  
+
   echo "== FINISHED LOGIN"
 }
 
@@ -151,7 +151,7 @@ function docker_push_to_ecr() {
   local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
   for tag in $DOCKER_TAGS; do
     docker push $2/$INPUT_REPO:$tag
-    echo ::set-output name=image::$2/$INPUT_REPO:$tag
+    echo name=image::$2/$INPUT_REPO:$tag >> $GITHUB_OUTPUT
   done
   echo "== FINISHED PUSH TO ECR"
 }
