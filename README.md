@@ -1,6 +1,6 @@
 # AWS ECR Action
 
-This Action allows you to create Docker images and push into a ECR repository.
+This Action allows you to Create a ECR repository
 
 ## Parameters
 | Parameter | Type | Default | Description |
