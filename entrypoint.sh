@@ -1,13 +1,9 @@
 #!/bin/bash
 set -e
 
-INPUT_PATH="${INPUT_PATH:-.}"
-INPUT_DOCKERFILE="${INPUT_DOCKERFILE:-Dockerfile}"
-INPUT_TAGS="${INPUT_TAGS:-latest}"
 INPUT_CREATE_REPO="${INPUT_CREATE_REPO:-false}"
 INPUT_SET_REPO_POLICY="${INPUT_SET_REPO_POLICY:-false}"
 INPUT_REPO_POLICY_FILE="${INPUT_REPO_POLICY_FILE:-repo-policy.json}"
-INPUT_IMAGE_SCANNING_CONFIGURATION="${INPUT_IMAGE_SCANNING_CONFIGURATION:-false}"
 
 function main() {
   sanitize "${INPUT_ACCESS_KEY_ID}" "access_key_id"
@@ -21,12 +17,8 @@ function main() {
   aws_configure
   assume_role
   login
-  run_pre_build_script $INPUT_PREBUILD_SCRIPT
-  docker_build $INPUT_TAGS $ACCOUNT_URL
   create_ecr_repo $INPUT_CREATE_REPO
   set_ecr_repo_policy $INPUT_SET_REPO_POLICY
-  put_image_scanning_configuration $INPUT_IMAGE_SCANNING_CONFIGURATION
-  docker_push_to_ecr $INPUT_TAGS $ACCOUNT_URL
 }
 
 function sanitize() {
@@ -105,55 +97,9 @@ function set_ecr_repo_policy() {
   fi
 }
 
-function put_image_scanning_configuration() {
-  if [ "${1}" = true ]; then
-      echo "== START SET IMAGE SCANNING CONFIGURATION"
-    if [ "${INPUT_IMAGE_SCANNING_CONFIGURATION}" = true ]; then
-      aws ecr put-image-scanning-configuration --repository-name $INPUT_REPO --image-scanning-configuration scanOnPush=${INPUT_IMAGE_SCANNING_CONFIGURATION}
-      echo "== FINISHED SET IMAGE SCANNING CONFIGURATION"
-    fi
-  fi
-}
 
-function run_pre_build_script() {
-  if [ ! -z "${1}" ]; then
-    echo "== START PREBUILD SCRIPT"
-    chmod a+x $1
-    $1
-    echo "== FINISHED PREBUILD SCRIPT"
-  fi
-}
 
-function docker_build() {
-  echo "== START DOCKERIZE"
-  local TAG=$1
-  local docker_tag_args=""
-  local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
-  for tag in $DOCKER_TAGS; do
-    docker_tag_args="$docker_tag_args -t $2/$INPUT_REPO:$tag"
-  done
 
-  if [ -n "${INPUT_CACHE_FROM}" ]; then
-    for i in ${INPUT_CACHE_FROM//,/ }; do
-      docker pull $i
-    done
 
-    INPUT_EXTRA_BUILD_ARGS="$INPUT_EXTRA_BUILD_ARGS --cache-from=$INPUT_CACHE_FROM"
-  fi
-
-  docker build $INPUT_EXTRA_BUILD_ARGS -f $INPUT_DOCKERFILE $docker_tag_args $INPUT_PATH
-  echo "== FINISHED DOCKERIZE"
-}
-
-function docker_push_to_ecr() {
-  echo "== START PUSH TO ECR"
-  local TAG=$1
-  local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
-  for tag in $DOCKER_TAGS; do
-    docker push $2/$INPUT_REPO:$tag
-    echo name=image::$2/$INPUT_REPO:$tag >> $GITHUB_OUTPUT
-  done
-  echo "== FINISHED PUSH TO ECR"
-}
 
 main
