@@ -3,7 +3,7 @@ author: Lee Sun-Hyoup <kciter@naver.com>, Pablo Castillo <pablo@castillo.is>
 branding:
   icon: upload-cloud
   color: orange
-description: Create Docker images and push into a ECR repository.
+description: Create a ECR repository.
 inputs:
   access_key_id:
     description: The AWS access key id
@@ -37,30 +37,6 @@ inputs:
   repo_policy_file:
     description: Set this to repository policy statement json file. only used if the set_repo_policy is set to true
     default: repo-policy.json
-  tags:
-    description: Comma-separated string of ECR image tags
-    default: latest
-  image_scanning_configuration:
-    description: Set this to True if you want AWS to scan your images for vulnerabilities
-    default: false
-  dockerfile:
-    description: Name of Dockerfile to use
-    default: Dockerfile
-  extra_build_args:
-    description: Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
-    default: ''
-  cache_from:
-    description: Images to use as cache for the docker build (see `--cache-from` argument docs.docker.com/engine/reference/commandline/build)
-    default: ''
-  path:
-    description: Path to Dockerfile, defaults to the working directory
-    default: .
-  prebuild_script:
-    description: Relative path from top-level to script to run before Docker build
-    required: false
-outputs:
-  image:
-    description: 'The created image name'
 runs:
   using: docker
   image: Dockerfile
