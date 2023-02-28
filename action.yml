@@ -16,7 +16,7 @@ inputs:
     required: true
   registry_ids:
     description: A comma-delimited list of AWS account IDs that are associated with the ECR registries. If you do not specify a registry, the default ECR registry is assumed
-    required: false
+    required: true
     default: ''
   assume_role:
     description: A role to assume under the account_id account.
