@@ -8,6 +8,7 @@ INPUT_CREATE_REPO="${INPUT_CREATE_REPO:-false}"
 INPUT_SET_REPO_POLICY="${INPUT_SET_REPO_POLICY:-false}"
 INPUT_REPO_POLICY_FILE="${INPUT_REPO_POLICY_FILE:-repo-policy.json}"
 INPUT_IMAGE_SCANNING_CONFIGURATION="${INPUT_IMAGE_SCANNING_CONFIGURATION:-false}"
+INPUT_PLATFORM="${INPUT_PLATFORM:-linux/amd64}"
 
 function main() {
   sanitize "${INPUT_ACCESS_KEY_ID}" "access_key_id"
@@ -141,7 +142,7 @@ function docker_build() {
     INPUT_EXTRA_BUILD_ARGS="$INPUT_EXTRA_BUILD_ARGS --cache-from=$INPUT_CACHE_FROM"
   fi
 
-  docker build $INPUT_EXTRA_BUILD_ARGS -f $INPUT_DOCKERFILE $docker_tag_args $INPUT_PATH
+  docker buildx build --platform $INPUT_PLATFORM $INPUT_EXTRA_BUILD_ARGS -f $INPUT_DOCKERFILE $docker_tag_args $INPUT_PATH
   echo "== FINISHED DOCKERIZE"
 }
 
@@ -151,7 +152,7 @@ function docker_push_to_ecr() {
   local DOCKER_TAGS=$(echo "$TAG" | tr "," "\n")
   for tag in $DOCKER_TAGS; do
     docker push $2/$INPUT_REPO:$tag
-    echo name=image::$2/$INPUT_REPO:$tag >> $GITHUB_OUTPUT
+    echo name=image::$2/$INPUT_REPO:$tag >> $GITHUB_ENV
   done
   echo "== FINISHED PUSH TO ECR"
 }

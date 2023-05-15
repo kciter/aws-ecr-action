@@ -8,6 +8,10 @@ inputs:
   access_key_id:
     description: The AWS access key id
     required: true
+  platform:
+    description: The platform of the image (e.g. linux/amd64, linux/arm64, linux/arm/v7)
+    required: false
+    default: linux/amd64
   secret_access_key:
     description: The AWS secret access key
     required: true
@@ -30,10 +34,10 @@ inputs:
     required: true
   create_repo:
     description: Set this to true to create the repository if it does not already exist
-    default: false
+    default: "false"
   set_repo_policy:
     description: Set this to true to set a policy on the repository
-    default: false
+    default: "false"
   repo_policy_file:
     description: Set this to repository policy statement json file. only used if the set_repo_policy is set to true
     default: repo-policy.json
@@ -42,7 +46,7 @@ inputs:
     default: latest
   image_scanning_configuration:
     description: Set this to True if you want AWS to scan your images for vulnerabilities
-    default: false
+    default: "false"
   dockerfile:
     description: Name of Dockerfile to use
     default: Dockerfile

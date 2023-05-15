@@ -10,6 +10,7 @@ This Action allows you to create Docker images and push into a ECR repository.
 | `account_id` | `string` | | Your AWS Account ID |
 | `repo` | `string` | | Name of your ECR repository |
 | `region` | `string` | | Your AWS region |
+| `platform` | `string` | | Platform to build on (e.g. linux/amd64, linux/arm64, linux/arm/v7) |
 | `create_repo` | `boolean` | `false` | Set this to true to create the repository if it does not already exist |
 | `set_repo_policy` | `boolean` | `false` | Set this to true to set a IAM policy on the repository |
 | `repo_policy_file` | `string` | `repo-policy.json` | Set this to repository policy statement json file. only used if the set_repo_policy is set to true |
