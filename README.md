@@ -15,7 +15,7 @@ This Action allows you to create Docker images and push into a ECR repository.
 | `repo_policy_file` | `string` | `repo-policy.json` | Set this to repository policy statement json file. only used if the set_repo_policy is set to true |
 | `image_scanning_configuration` | `boolean` | `false` | Set this to True if you want AWS to scan your images for vulnerabilities |
 | `tags` | `string` | `latest` | Comma-separated string of ECR image tags (ex latest,1.0.0,) |
-| `dockerfile` | `string` | `Dockerfile` | Name of Dockerfile to use |
+| `dockerfile` | `string` | `Dockerfile` | The path to the Dockerfile to be used (e.g., path/to/Dockerfile) |
 | `extra_build_args` | `string` | `""` | Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build) |
 | `cache_from` | `string` | `""` | Images to use as cache for the docker build (see `--cache-from` argument docs.docker.com/engine/reference/commandline/build) |
 | `path` | `string` | `.` | Path to Dockerfile, defaults to the working directory |
